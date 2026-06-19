@@ -1,0 +1,585 @@
+/* Color Palette Variables & Design Engine */
+:root {
+    --bg-canvas: #08080a;
+    --bg-card: rgba(18, 18, 22, 0.45);
+    --accent-cyan: #00f2fe;
+    --accent-red: #ff0d30;
+    --text-head: #f8f9fa;
+    --text-body: #a1a1aa;
+    --border-flat: #22222a;
+    --cyan-glow: 0 0 14px rgba(0, 242, 254, 0.35);
+    --red-glow: 0 0 14px rgba(255, 13, 48, 0.35);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background-color: var(--bg-canvas);
+    color: var(--text-body);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Background Cyber Scan Grid Line Matrix */
+.bg-matrix-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: 
+        linear-gradient(rgba(255, 13, 48, 0.01) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 254, 0.01) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Layout Core Wrapper */
+.wrapper {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Sticky Header Settings */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 40px;
+    background: rgba(8, 8, 10, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-flat);
+}
+
+.nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-cyan);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-shadow: var(--cyan-glow);
+    letter-spacing: -0.5px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-body);
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--accent-cyan);
+}
+
+/* Glassmorphism Structural Definitions */
+.glassmorphism {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-flat);
+    border-radius: 8px;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    border-bottom: 1px solid var(--border-flat);
+}
+
+.status-indicator {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent-red);
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 13, 48, 0.08);
+    padding: 6px 16px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 13, 48, 0.2);
+    font-weight: 500;
+}
+
+.pulse-node {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent-red);
+    border-radius: 50%;
+    animation: beacon 1.6s infinite;
+}
+
+.hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    color: var(--text-head);
+    font-weight: 800;
+    letter-spacing: -2.5px;
+    line-height: 0.95;
+    margin-bottom: 16px;
+}
+
+.hero-role {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    color: var(--text-body);
+    margin-bottom: 28px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+}
+
+.hero-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-cyan);
+    font-size: 1.05rem;
+    min-height: 30px;
+    margin-bottom: 44px;
+    text-shadow: var(--cyan-glow);
+    font-weight: 500;
+}
+
+.cursor {
+    animation: blink 0.8s infinite;
+    font-weight: 700;
+    color: var(--accent-cyan);
+}
+
+.hero-ctas {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    padding: 14px 32px;
+    border-radius: 4px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary {
+    background-color: var(--accent-cyan);
+    color: #000000;
+    font-weight: 700;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--cyan-glow);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-head);
+    border: 1px solid var(--border-flat);
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent-red);
+    box-shadow: var(--red-glow);
+}
+
+.btn-tertiary {
+    background-color: transparent;
+    color: var(--text-body);
+}
+
+.btn-tertiary:hover {
+    color: var(--accent-cyan);
+}
+
+/* Core Main Structural Layouts */
+section {
+    padding: 110px 0;
+    border-bottom: 1px solid var(--border-flat);
+}
+
+.section-title {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-head);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    margin-bottom: 48px;
+    font-weight: 500;
+}
+
+/* About Grid Layout */
+.about-card {
+    padding: 40px;
+}
+
+.about-card p {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.65;
+    color: var(--text-head);
+    margin-bottom: 30px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+}
+
+.about-meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border-flat);
+    padding-top: 24px;
+}
+
+.about-meta span {
+    font-weight: 400;
+}
+
+.neon-red-txt { color: var(--accent-red); font-weight: 600 !important; }
+.neon-cyan-txt { color: var(--accent-cyan); font-weight: 600 !important; }
+
+/* Skills Section Grid Matrix layout */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.skills-group {
+    padding: 24px;
+    transition: border-color 0.3s ease;
+}
+
+.skills-group:hover {
+    border-color: rgba(0, 242, 254, 0.25);
+}
+
+.skills-group h4 {
+    font-family: 'Syne', sans-serif;
+    color: var(--text-head);
+    font-size: 1.05rem;
+    margin-bottom: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background-color: rgba(8, 8, 10, 0.6);
+    color: var(--text-head);
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border-flat);
+    font-weight: 400;
+}
+
+/* Project Interface Design */
+.projects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.project-card {
+    padding: 35px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover {
+    transform: translateX(4px);
+}
+
+.project-card.featured-cyan:hover {
+    border-color: var(--accent-cyan);
+    box-shadow: var(--cyan-glow);
+}
+
+.project-card.featured-red:hover {
+    border-color: var(--accent-red);
+    box-shadow: var(--red-glow);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.project-label.cyan { color: var(--accent-cyan); }
+.project-label.red { color: var(--accent-red); }
+.project-label.gray { color: var(--text-body); }
+
+.project-card h4 {
+    font-family: 'Syne', sans-serif;
+    color: var(--text-head);
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.project-team {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    color: var(--text-body);
+    font-weight: 500;
+}
+
+.project-description {
+    font-size: 1rem;
+    margin-bottom: 24px;
+    color: var(--text-body);
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+}
+
+.project-tags span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    background-color: rgba(248, 249, 254, 0.04);
+    color: var(--text-head);
+    padding: 4px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border-flat);
+}
+
+.project-links {
+    display: flex;
+    gap: 24px;
+}
+
+.proj-link {
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-head);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.proj-link:hover {
+    color: var(--accent-cyan);
+}
+
+/* Academic Nodes */
+.edu-node {
+    padding: 40px;
+}
+
+.edu-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.edu-header h4 {
+    font-family: 'Syne', sans-serif;
+    color: var(--text-head);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.edu-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.edu-institution {
+    color: var(--accent-cyan);
+    font-weight: 600;
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+}
+
+.edu-coursework {
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+/* GPA performance layout system grids */
+.gpa-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.gpa-box {
+    background-color: rgba(8, 8, 10, 0.5);
+    border: 1px solid var(--border-flat);
+    padding: 14px 20px;
+    flex: 1;
+    min-width: 130px;
+    border-radius: 4px;
+}
+
+.gpa-box.aggregate {
+    border-color: var(--accent-red);
+    background: rgba(255, 13, 48, 0.02);
+}
+
+.gpa-box h5 {
+    font-family: 'Syne', sans-serif;
+    color: var(--text-head);
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 2px;
+}
+
+.gpa-box label {
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    color: var(--text-body);
+    font-weight: 500;
+}
+
+/* Connections Grid */
+.contact-wrapper {
+    padding: 50px;
+    text-align: center;
+}
+
+.contact-pitch {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 35px;
+    color: var(--text-head);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-links-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.contact-bar {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(8, 8, 10, 0.7);
+    border: 1px solid var(--border-flat);
+    padding: 16px 24px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.contact-bar:hover {
+    border-color: var(--accent-cyan);
+    transform: translateY(-2px);
+}
+
+.contact-bar .c-left {
+    color: var(--accent-cyan);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+}
+
+.contact-bar .c-right {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text-head);
+    font-weight: 500;
+}
+
+/* System Footer Node */
+.footer {
+    text-align: center;
+    padding: 40px;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    border-top: 1px solid var(--border-flat);
+    margin-top: 80px;
+    color: #4b5563;
+    font-weight: 400;
+}
+
+/* Interaction Scroll Reveals Engine CSS states */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.active-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes beacon {
+    0% { transform: scale(0.95); opacity: 0.4; }
+    50% { transform: scale(1.1); opacity: 1; box-shadow: var(--red-glow); }
+    100% { transform: scale(0.95); opacity: 0.4; }
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* Responsive Structural Modifications */
+@media (max-width: 768px) {
+    .navbar { padding: 20px; }
+    .nav-links { display: none; }
+    .contact-wrapper { padding: 30px 16px; }
+    .hero-name { letter-spacing: -1px; }
+}
